@@ -1458,6 +1458,178 @@ footer {
   white-space: nowrap;
 }
 
+
+/* ── TOPBAR URGÊNCIA ── */
+.topbar-urgencia {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  background: linear-gradient(90deg, #E65100 0%, #BF360C 100%);
+  color: #fff;
+  text-align: center;
+  padding: 10px 16px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.topbar-pulse {
+  width: 8px; height: 8px;
+  background: #fff;
+  border-radius: 50%;
+  flex-shrink: 0;
+  animation: topbarPulse 1.4s ease-in-out infinite;
+}
+
+@keyframes topbarPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.4; transform: scale(1.4); }
+}
+
+.topbar-close {
+  position: absolute;
+  right: 14px;
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.7);
+  font-size: 1.1rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+}
+
+/* Compensar header pelo topbar */
+header { top: 40px !important; }
+.hero  { padding-top: 140px !important; }
+
+/* ── FAQ ── */
+.faq-section {
+  position: relative;
+  z-index: 1;
+  padding: 80px 24px;
+  background: rgba(0,0,0,0.25);
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.faq-inner {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 40px;
+}
+
+.faq-item {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 14px;
+  overflow: hidden;
+  transition: border-color 0.25s;
+}
+
+.faq-item.open {
+  border-color: rgba(46,125,50,0.5);
+}
+
+.faq-question {
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 18px 20px;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #fff;
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.faq-icon {
+  width: 28px; height: 28px;
+  background: rgba(46,125,50,0.3);
+  border: 1px solid rgba(46,125,50,0.4);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  color: #81C784;
+  flex-shrink: 0;
+  transition: transform 0.3s;
+  line-height: 1;
+}
+
+.faq-item.open .faq-icon { transform: rotate(45deg); }
+
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.4s cubic-bezier(0.2,0.8,0.2,1), opacity 0.3s, padding 0.3s;
+  padding: 0 20px;
+  font-size: 0.88rem;
+  color: rgba(255,255,255,0.65);
+  line-height: 1.7;
+}
+
+.faq-item.open .faq-answer {
+  max-height: 300px;
+  opacity: 1;
+  padding: 0 20px 18px;
+}
+
+/* ── FAB WHATSAPP ── */
+.fab-whatsapp {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 150;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #25D366;
+  color: #fff;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.88rem;
+  padding: 14px 20px;
+  border-radius: 100px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  box-shadow: 0 8px 30px rgba(37,211,102,0.45);
+  animation: fabPulse 2s ease-in-out infinite;
+  transition: transform 0.2s;
+  white-space: nowrap;
+}
+
+.fab-whatsapp:hover { transform: translateY(-3px); }
+
+.fab-whatsapp svg { flex-shrink: 0; }
+
+@keyframes fabPulse {
+  0%, 100% { box-shadow: 0 8px 30px rgba(37,211,102,0.45), 0 0 0 0 rgba(37,211,102,0.4); }
+  50%       { box-shadow: 0 8px 30px rgba(37,211,102,0.45), 0 0 0 12px rgba(37,211,102,0); }
+}
+
+@media (max-width: 480px) {
+  .fab-whatsapp .fab-label { display: none; }
+  .fab-whatsapp { padding: 14px; border-radius: 50%; }
+  header { top: 40px !important; }
+}
+
 </style>
 </head>
 <body>
@@ -1487,6 +1659,13 @@ footer {
 <!-- ============================================================
      HEADER
      ============================================================ -->
+<!-- ── TOPBAR URGÊNCIA ── -->
+<div class="topbar-urgencia" id="topbar">
+  <div class="topbar-pulse"></div>
+  <span>⚠️ <strong>Vagas limitadas por dia.</strong> Garanta a sua figurinha antes que a fila aumente.</span>
+  <button class="topbar-close" onclick="document.getElementById('topbar').style.display='none'; document.querySelector('header').style.top='0'; document.querySelector('.hero').style.paddingTop='100px'">✕</button>
+</div>
+
 <header>
   <div class="logo">kr.<span>IArt</span></div>
   <a href="#formulario" class="header-cta">Criar minha figurinha</a>
@@ -1892,6 +2071,78 @@ footer {
   </div>
 </section>
 
+<!-- ── FAQ ── -->
+<section class="faq-section">
+  <div class="faq-inner">
+    <div class="section-label" style="text-align:center">Dúvidas frequentes</div>
+    <h2 class="section-title" style="text-align:center">Perguntas e respostas</h2>
+
+    <div class="faq-list">
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          Que foto devo enviar?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          Uma selfie de frente, com boa iluminação, rosto nítido e sem óculos escuros. Quanto melhor a foto, melhor o resultado da figurinha. JPG, PNG ou WEBP são aceitos.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          Em quanto tempo recebo minha figurinha?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          O prazo é de até 24 horas após a confirmação do pagamento. Na maioria dos casos entregamos bem antes disso. Você recebe diretamente no WhatsApp ou e-mail que informou.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          Posso escolher qualquer seleção?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          Sim! Brasil, França, Argentina, Portugal, Alemanha, Holanda e qualquer outra seleção. Se a sua não aparecer na lista, basta digitar o nome no campo "Outra seleção".
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          O pagamento é seguro?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          Sim. O pagamento é processado pelo Mercado Pago, a plataforma de pagamentos mais usada do Brasil. Aceitamos Pix, cartão de crédito e débito. Seus dados estão 100% protegidos.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          Posso pedir figurinhas para outras pessoas?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          Com certeza! Temos pacotes de 3, 5 e 10 figurinhas — perfeitos para família, grupos de amigos ou times de futebol. Quanto mais, mais barato fica por figurinha.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          Não gostei do resultado. E agora?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          Fale com a gente pelo WhatsApp. Analisamos cada caso e refazemos a figurinha se a foto enviada tiver boa qualidade. Nossa prioridade é você ficar satisfeito.
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
 <!-- ============================================================
      UPSELL — PACOTES
      ============================================================ -->
@@ -1955,6 +2206,14 @@ footer {
   </div>
 </footer>
 
+<!-- ── FAB WHATSAPP ── -->
+<a class="fab-whatsapp" href="https://wa.me/5547997605014?text=Ol%C3%A1!%20Tenho%20uma%20d%C3%BAvida%20sobre%20a%20figurinha%20personalizada." target="_blank" rel="noopener">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </svg>
+  <span class="fab-label">Fale pelo WhatsApp</span>
+</a>
+
 <!-- Loading overlay -->
 <div class="loading-overlay" id="loading">
   <div class="spinner"></div>
@@ -1974,7 +2233,7 @@ const CONFIG = {
   // ══════════════════════════════════════════
 
   // Seu WhatsApp para pacotes e contato
-  whatsappNumber: '5548999999999',
+  whatsappNumber: '5547997605014',
 
   // Supabase — Settings → API
   supabaseUrl: 'https://txmkhulfgpkivcugggzf.supabase.co',
@@ -1986,7 +2245,7 @@ const CONFIG = {
   },
 
   // URL do seu site (para redirect após pagamento)
-  siteUrl: window.location.origin,
+  siteUrl: 'https://kriartfigurinha.vercel.app',
 
   // false = produção real | true = testa sem pagar
   testMode: false,
@@ -2496,6 +2755,17 @@ function checkPaymentReturn() {
   }
 }
 checkPaymentReturn();
+
+/* ── FAQ toggle ── */
+function toggleFaq(btn) {
+  const item = btn.closest('.faq-item');
+  const isOpen = item.classList.contains('open');
+  // Fechar todos
+  document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+  // Abrir o clicado se estava fechado
+  if (!isOpen) item.classList.add('open');
+}
+
 </script>
 </body>
 </html>
