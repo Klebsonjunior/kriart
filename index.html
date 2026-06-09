@@ -1648,6 +1648,7 @@ fbq('track', 'PageView');
 src="https://www.facebook.com/tr?id=1535657421687710&ev=PageView&noscript=1"
 /></noscript>
 <!-- End Meta Pixel Code -->
+<script src="https://sdk.mercadopago.com/js/v2"></script>
 </head>
 <body>
 
@@ -1910,6 +1911,31 @@ src="https://www.facebook.com/tr?id=1535657421687710&ev=PageView&noscript=1"
       
     </div><!-- /form-body -->
     
+    <!-- TELA DE PAGAMENTO TRANSPARENTE -->
+    <div id="payment-panel" style="display:none; padding: 8px 0;">
+      <div style="text-align:center; margin-bottom: 24px;">
+        <div style="font-size:1.8rem; margin-bottom:6px;">🔒</div>
+        <h3 style="font-family: var(--font-display); color: var(--gold); font-size:1.3rem; margin-bottom:4px;">
+          Finalize seu pagamento
+        </h3>
+        <p style="color: var(--muted); font-size: 0.88rem;">
+          Pix ou cartão de crédito · R$ 7,90 · Seguro e rápido
+        </p>
+      </div>
+      <div id="paymentBrick_container"></div>
+      <button onclick="voltarDoPayment()" style="
+        background: transparent;
+        border: 1px solid var(--border);
+        color: var(--muted);
+        border-radius: 100px;
+        padding: 10px 24px;
+        font-size: 0.85rem;
+        cursor: pointer;
+        margin-top: 16px;
+        width: 100%;
+      ">← Voltar e editar dados</button>
+    </div>
+
     <!-- TELA DE SUCESSO -->
     <div class="success-panel" id="success-panel">
       <div class="success-icon">🏆</div>
@@ -2252,6 +2278,10 @@ const CONFIG = {
   // Seu WhatsApp para pacotes e contato
   whatsappNumber: '5547997605014',
 
+  // Mercado Pago Public Key (segura no frontend — diferente do Access Token)
+  // mercadopago.com.br/developers/panel → Credenciais de produção → Public Key
+  mpPublicKey: APP_USR-fc71398e-a44a-47ff-931c-43bbfb6962f7,
+
   // Supabase — Settings → API
   supabaseUrl: 'https://txmkhulfgpkivcugggzf.supabase.co',
   supabaseAnonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR4bWtodWxmZ3BraXZjdWdnZ3pmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2MTMyODUsImV4cCI6MjA5NjE4OTI4NX0.6_2p06RT_3uwNPK_MhBcJebbw1eJ_Hr_x4JgNR14fTc',
@@ -2464,11 +2494,11 @@ function buildConfirmSummary() {
 /* ============================================================
    PAGAMENTO
    ============================================================ */
+let _pedidoIdAtual = null;
+let _mpBrickController = null;
+
 async function handlePayment() {
-  // Validar entrega
-  if (!formData.metodoEntrega) {
-    showError('err-delivery'); return;
-  }
+  if (!formData.metodoEntrega) { showError('err-delivery'); return; }
   if (formData.metodoEntrega === 'whatsapp') {
     formData.whatsapp = document.getElementById('whatsapp-input').value.trim();
     if (!formData.whatsapp) { showError('err-delivery'); return; }
@@ -2478,39 +2508,168 @@ async function handlePayment() {
   }
   hideError('err-delivery');
 
-// Meta CAPI — rastreia quem foi pro pagamento
-fbq('track', 'InitiateCheckout', {
-  value: 7.90,
-  currency: 'BRL',
-  content_name: 'Figurinha Personalizada'
-});
+  if (typeof fbq !== 'undefined') {
+    fbq('track', 'InitiateCheckout', { value: 7.90, currency: 'BRL', content_name: 'Figurinha Personalizada' });
+  }
 
   showLoading();
 
   try {
     if (CONFIG.testMode) {
-      // Modo teste — simula sem chamar backend
       await sleep(1800);
       hideLoading();
       showSuccess();
       return;
     }
 
-    // 1. Salvar pedido no Supabase (status: aguardando_pagamento) + upload foto
     const pedidoId = await salvarPedidoSupabase();
+    _pedidoIdAtual = pedidoId;
 
-    // 2. Criar preferência no Mercado Pago via Edge Function
-    const urlPagamento = await criarPagamentoMercadoPago(pedidoId);
-
-    // 3. Redirecionar para o checkout do Mercado Pago
     hideLoading();
-    window.location.href = urlPagamento;
+    document.querySelector('.form-header').style.display = 'none';
+    document.querySelector('.form-body').style.display   = 'none';
+    document.getElementById('payment-panel').style.display = 'block';
+    document.getElementById('formulario').scrollIntoView({ behavior: 'smooth' });
+
+    await inicializarPaymentBrick(pedidoId);
 
   } catch (err) {
     hideLoading();
     console.error(err);
     alert('Erro ao processar o pedido: ' + err.message + '\n\nEntre em contato via WhatsApp se o erro persistir.');
   }
+}
+
+async function inicializarPaymentBrick(pedidoId) {
+  if (_mpBrickController) { await _mpBrickController.unmount(); _mpBrickController = null; }
+  document.getElementById('paymentBrick_container').innerHTML = '';
+
+  const mp = new MercadoPago(CONFIG.mpPublicKey, { locale: 'pt-BR' });
+  const bricksBuilder = mp.bricks();
+
+  _mpBrickController = await bricksBuilder.create('payment', 'paymentBrick_container', {
+    initialization: { amount: 7.90 },
+    customization: {
+      paymentMethods: {
+        creditCard: 'all', debitCard: 'all',
+        bankTransfer: 'all', ticket: 'all',
+        maxInstallments: 1,
+      },
+      visual: {
+        style: {
+          theme: 'dark',
+          customVariables: {
+            baseColor: '#D4A843',
+            baseColorFirstVariant: '#F2CC6B',
+            baseColorSecondVariant: '#B8860B',
+            borderRadius: '12px',
+          }
+        }
+      }
+    },
+    callbacks: {
+      onReady: () => {},
+      onSubmit: async ({ selectedPaymentMethod, formData: brickData }) => {
+        try {
+          const res = await fetch(CONFIG.pagamentoEndpoint, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'apikey': CONFIG.supabaseAnonKey,
+              'Authorization': `Bearer ${CONFIG.supabaseAnonKey}`,
+            },
+            body: JSON.stringify({
+              pedidoId: _pedidoIdAtual,
+              nomeCliente: formData.nomeFigurinha,
+              metodoEntrega: formData.metodoEntrega,
+              contato: formData.metodoEntrega === 'whatsapp' ? formData.whatsapp : formData.email,
+              paymentData: brickData,
+              paymentMethod: selectedPaymentMethod,
+            }),
+          });
+
+          const result = await res.json();
+          if (!res.ok) throw new Error(result.error || 'Erro no pagamento');
+
+          if (result.status === 'approved') {
+            if (typeof fbq !== 'undefined') fbq('track', 'Purchase', { value: 7.90, currency: 'BRL' });
+            document.getElementById('payment-panel').style.display = 'none';
+            showSuccess();
+          } else if (result.status === 'pending' && result.qr_code) {
+            mostrarQrPix(result);
+          } else {
+            mostrarPendente();
+          }
+        } catch (err) {
+          console.error(err);
+          throw err;
+        }
+      },
+      onError: (err) => console.error('Brick error:', err),
+    },
+  });
+}
+
+function mostrarQrPix(result) {
+  document.getElementById('paymentBrick_container').innerHTML = `
+    <div style="text-align:center; padding:16px 0;">
+      <div style="font-size:1.1rem;font-weight:700;color:var(--gold);margin-bottom:16px;">⚡ Pague com Pix</div>
+      <img src="data:image/png;base64,${result.qr_code_base64}"
+        alt="QR Code Pix"
+        style="width:200px;height:200px;border-radius:12px;background:#fff;padding:10px;margin-bottom:16px;"/>
+      <p style="font-size:0.8rem;color:var(--muted);margin-bottom:8px;">Ou copie o código:</p>
+      <div style="background:rgba(255,255,255,0.07);border:1px solid var(--border);border-radius:10px;
+        padding:12px;font-size:0.7rem;font-family:monospace;word-break:break-all;text-align:left;margin-bottom:12px;">
+        ${result.qr_code}
+      </div>
+      <button onclick="navigator.clipboard.writeText('${result.qr_code}').then(()=>alert('Código copiado!'))"
+        style="background:var(--gold);color:#080A10;border:none;border-radius:100px;
+          padding:12px 28px;font-weight:700;cursor:pointer;width:100%;margin-bottom:16px;">
+        📋 Copiar código Pix
+      </button>
+      <div style="background:rgba(18,160,68,0.12);border:1px solid rgba(18,160,68,0.3);
+        border-radius:10px;padding:14px;font-size:0.85rem;color:#81C784;">
+        🔄 Aguardando pagamento...<br>
+        <span style="font-size:0.75rem;color:var(--muted);">Confirmação automática · Expira em 30 min</span>
+      </div>
+    </div>`;
+  iniciarPollingPagamento(_pedidoIdAtual);
+}
+
+function mostrarPendente() {
+  document.getElementById('paymentBrick_container').innerHTML = `
+    <div style="text-align:center;padding:24px 0;">
+      <div style="font-size:2rem;margin-bottom:12px;">⏳</div>
+      <p style="color:var(--gold);font-weight:700;margin-bottom:8px;">Pagamento em processamento</p>
+      <p style="color:var(--muted);font-size:0.88rem;">Você receberá a confirmação em breve.</p>
+    </div>`;
+}
+
+function iniciarPollingPagamento(pedidoId) {
+  const iv = setInterval(async () => {
+    try {
+      const res = await fetch(`${CONFIG.supabaseUrl}/functions/v1/verificar-pagamento`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'apikey': CONFIG.supabaseAnonKey, 'Authorization': `Bearer ${CONFIG.supabaseAnonKey}` },
+        body: JSON.stringify({ pedidoId }),
+      });
+      const data = await res.json();
+      if (data.status === 'approved') {
+        clearInterval(iv);
+        if (typeof fbq !== 'undefined') fbq('track', 'Purchase', { value: 7.90, currency: 'BRL' });
+        document.getElementById('payment-panel').style.display = 'none';
+        showSuccess();
+      }
+    } catch(e) {}
+  }, 5000);
+  setTimeout(() => clearInterval(iv), 30 * 60 * 1000);
+}
+
+function voltarDoPayment() {
+  document.getElementById('payment-panel').style.display = 'none';
+  document.querySelector('.form-header').style.display = '';
+  document.querySelector('.form-body').style.display = '';
+  if (_mpBrickController) { _mpBrickController.unmount(); _mpBrickController = null; }
 }
 
 /* ============================================================
@@ -2591,33 +2750,7 @@ async function salvarPedidoSupabase() {
    Crie uma Edge Function no Supabase ou função no Vercel/Netlify
    que receba o pedidoId, crie a preferência e retorne o init_point.
    ============================================================ */
-async function criarPagamentoMercadoPago(pedidoId) {
-  const res = await fetch(CONFIG.pagamentoEndpoint, {
-    method: 'POST',
-    headers: {
-      'Content-Type':  'application/json',
-      'apikey':        CONFIG.supabaseAnonKey,
-      'Authorization': `Bearer ${CONFIG.supabaseAnonKey}`,
-    },
-    body: JSON.stringify({
-      pedidoId,
-      nomeCliente:   formData.nomeFigurinha,
-      metodoEntrega: formData.metodoEntrega,
-      contato:       formData.metodoEntrega === 'whatsapp' ? formData.whatsapp : formData.email,
-    }),
-  });
-
-  if (!res.ok) {
-    const err = await res.text();
-    throw new Error('Erro ao criar pagamento: ' + err);
-  }
-
-  const data = await res.json();
-  
-  // Em produção: redireciona para o Mercado Pago
-  // Em sandbox: usa sandbox_init_point
-  return data.init_point || data.sandbox_init_point;
-}
+// criarPagamentoMercadoPago removida — substituída pelo Payment Brick
 
 /* ============================================================
    SUCESSO
