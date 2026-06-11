@@ -165,6 +165,14 @@ header {
   border-bottom: 1px solid var(--border);
 }
 
+/* ALTERAÇÃO: logo clicável + tagline ao lado */
+.logo-area {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-decoration: none;
+}
+
 .logo {
   font-family: var(--font-display);
   font-size: 1.5rem;
@@ -178,6 +186,17 @@ header {
 
 .logo span {
   font-style: italic;
+}
+
+/* NOVO: tagline ao lado da logo */
+.logo-tagline {
+  font-size: 0.78rem;
+  color: var(--muted);
+  font-weight: 400;
+  border-left: 1px solid rgba(212,168,67,0.3);
+  padding-left: 14px;
+  line-height: 1.3;
+  white-space: nowrap;
 }
 
 .header-cta {
@@ -1086,101 +1105,161 @@ section {
 .error-msg.visible { display: block; }
 
 /* ============================================================
-   UPSELL — PACOTES
+   UPSELL — PACOTES (ALTERAÇÃO: mais chamativo)
    ============================================================ */
 .upsell-section {
   padding: 100px 24px;
   text-align: center;
-  background: rgba(0,0,0,0.2);
-  border-top: 1px solid var(--border);
+  background: #071a0e;
+  border-top: 2px solid rgba(212,168,67,0.25);
+  border-bottom: 2px solid rgba(212,168,67,0.25);
+  position: relative;
+  overflow: hidden;
+}
+
+.upsell-section::before {
+  content: '';
+  position: absolute;
+  top: -200px; left: 50%;
+  transform: translateX(-50%);
+  width: 900px; height: 500px;
+  background: radial-gradient(ellipse, rgba(212,168,67,0.18) 0%, transparent 70%);
+  pointer-events: none;
 }
 
 .packages-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 20px;
-  max-width: 900px;
+  max-width: 960px;
   margin: 0 auto;
 }
 
 .package-card {
-  background: rgba(255,255,255,0.1);
-  border: 1.5px solid rgba(255,255,255,0.18);
-  backdrop-filter: blur(16px);
-  border-radius: 20px;
-  padding: 36px 28px;
-  transition: all 0.3s;
+  background: #f5f0e8;
+  border: 2px solid #d4c9a8;
+  border-radius: 24px;
+  padding: 36px 28px 32px;
+  transition: all 0.35s;
   position: relative;
   overflow: hidden;
   text-align: left;
 }
 
 .package-card.featured {
-  border-color: rgba(255,255,255,0.5);
-  background: rgba(255,255,255,0.16);
-  box-shadow: 0 0 40px rgba(255,255,255,0.15);
+  background: #fff8ec;
+  border-color: var(--gold);
+  box-shadow: 0 0 0 1px rgba(212,168,67,0.5), 0 20px 60px rgba(0,0,0,0.2), 0 0 60px rgba(212,168,67,0.15);
 }
 
 .package-card::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, var(--gold-dim) 0%, transparent 50%);
+  background: linear-gradient(135deg, rgba(212,168,67,0.08) 0%, transparent 55%);
   opacity: 0;
-  transition: opacity 0.3s;
+  transition: opacity 0.35s;
 }
 
-.package-card:hover { transform: translateY(-5px); }
+.package-card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(0,0,0,0.2), 0 0 30px rgba(212,168,67,0.15); }
 .package-card:hover::before { opacity: 1; }
 .package-card.featured::before { opacity: 1; }
 
-.package-badge {
-  display: inline-block;
+/* Ribbon "Mais escolhido" */
+.package-ribbon {
+  position: absolute;
+  top: 18px; right: -28px;
   background: linear-gradient(135deg, var(--gold-light), var(--gold));
   color: #060A12;
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  padding: 4px 12px;
+  letter-spacing: 0.08em;
+  padding: 5px 36px;
+  transform: rotate(42deg);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+.package-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(139,90,0,0.12);
+  border: 1px solid rgba(139,90,0,0.25);
   border-radius: 100px;
-  margin-bottom: 20px;
+  padding: 5px 14px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #7a5200;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 18px;
 }
 
 .package-title {
   font-family: var(--font-display);
-  font-size: 1.2rem;
+  font-size: 1.25rem;
   font-weight: 700;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
+  color: #1a1a1a;
   position: relative;
-  color: #fff;
+}
+
+/* Preço antigo / economia */
+.package-old-price {
+  font-size: 0.82rem;
+  color: #888;
+  text-decoration: line-through;
+  margin-bottom: 4px;
+  position: relative;
+}
+
+.package-economy {
+  display: inline-block;
+  background: rgba(11,110,45,0.12);
+  border: 1px solid rgba(11,110,45,0.3);
+  border-radius: 100px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #0b6e2d;
+  padding: 2px 10px;
+  margin-bottom: 10px;
+  position: relative;
 }
 
 .package-price {
-  font-size: 2.2rem;
+  font-size: 2.6rem;
   font-family: var(--font-display);
   font-weight: 900;
-  color: var(--gold-light);
-  margin-bottom: 12px;
+  color: #7a5200;
+  margin-bottom: 6px;
   line-height: 1;
+  position: relative;
+}
+
+.package-price-unit {
+  font-size: 0.78rem;
+  color: #888;
+  margin-bottom: 20px;
   position: relative;
 }
 
 .package-desc {
   font-size: 0.88rem;
-  color: rgba(255,255,255,0.65);
-  margin-bottom: 24px;
+  color: #444;
+  margin-bottom: 28px;
   position: relative;
+  line-height: 1.5;
 }
 
 .btn-package {
   width: 100%;
-  background: rgba(255,255,255,0.15);
-  border: 1.5px solid rgba(255,255,255,0.3);
+  background: #1a1a1a;
+  border: none;
   color: #fff;
-  font-weight: 600;
-  font-size: 0.9rem;
-  padding: 12px 20px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 14px 20px;
   border-radius: 100px;
   cursor: pointer;
   transition: all 0.25s;
@@ -1195,9 +1274,10 @@ section {
   background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 100%);
   border-color: transparent;
   color: #060A12;
+  box-shadow: 0 8px 24px rgba(212,168,67,0.35);
 }
 
-.btn-package:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(212,168,67,0.3); }
+.btn-package:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,0.2); }
 
 /* ============================================================
    FOOTER
@@ -1276,6 +1356,7 @@ footer {
 @media (max-width: 768px) {
   header { padding: 14px 20px; }
   .logo { font-size: 1.2rem; }
+  .logo-tagline { display: none; }
   
   .benefits-inner { grid-template-columns: 1fr; }
   .benefits-visual { height: 280px; }
@@ -1289,6 +1370,32 @@ footer {
   .footer-inner { flex-direction: column; }
   .footer-disclaimer { text-align: left; }
   .hero-stats { gap: 24px; }
+
+  /* Hero mobile: coluna única, imagens embaixo */
+  section.hero {
+    flex-direction: column !important;
+    text-align: center !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+    align-items: center !important;
+  }
+  section.hero > div:first-child {
+    align-items: center !important;
+  }
+  section.hero > div:first-child .hero-actions,
+  section.hero > div:first-child .hero-pills {
+    justify-content: center !important;
+  }
+  section.hero > div:last-child {
+    max-width: 100% !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+  }
+  section.hero > div:last-child img {
+    width: calc(33% - 4px) !important;
+    border-radius: 8px !important;
+  }
 }
 
 @media (max-width: 480px) {
@@ -1459,52 +1566,59 @@ footer {
 }
 
 
-/* ── TOPBAR URGÊNCIA ── */
+/* ── TOPBAR URGÊNCIA (ALTERAÇÃO: maior e mais chamativo) ── */
 .topbar-urgencia {
   position: fixed;
   top: 0; left: 0; right: 0;
   z-index: 200;
-  background: linear-gradient(90deg, #E65100 0%, #BF360C 100%);
+  background: linear-gradient(90deg, #BF360C 0%, #E64A19 50%, #BF360C 100%);
   color: #fff;
   text-align: center;
-  padding: 10px 16px;
+  padding: 7px 48px;
   font-size: 0.82rem;
   font-weight: 600;
   letter-spacing: 0.02em;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 12px;
+  border-bottom: 1px solid rgba(255,200,100,0.3);
 }
 
 .topbar-pulse {
-  width: 8px; height: 8px;
-  background: #fff;
+  width: 10px; height: 10px;
+  background: #FFD54F;
   border-radius: 50%;
   flex-shrink: 0;
-  animation: topbarPulse 1.4s ease-in-out infinite;
+  animation: topbarPulse 1.2s ease-in-out infinite;
+  box-shadow: 0 0 0 0 rgba(255,213,79,0.6);
 }
 
 @keyframes topbarPulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50%       { opacity: 0.4; transform: scale(1.4); }
+  0%   { opacity: 1; transform: scale(1);   box-shadow: 0 0 0 0   rgba(255,213,79,0.6); }
+  50%  { opacity: 0.6; transform: scale(1.5); box-shadow: 0 0 0 6px rgba(255,213,79,0);   }
+  100% { opacity: 1; transform: scale(1);   box-shadow: 0 0 0 0   rgba(255,213,79,0.6); }
 }
 
 .topbar-close {
   position: absolute;
-  right: 14px;
-  background: none;
+  right: 16px;
+  background: rgba(255,255,255,0.15);
   border: none;
-  color: rgba(255,255,255,0.7);
-  font-size: 1.1rem;
+  color: #fff;
+  font-size: 1rem;
   cursor: pointer;
   line-height: 1;
-  padding: 0;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: background 0.2s;
 }
 
+.topbar-close:hover { background: rgba(255,255,255,0.28); }
+
 /* Compensar header pelo topbar */
-header { top: 40px !important; }
-.hero  { padding-top: 140px !important; }
+header { top: 36px !important; }
+.hero  { padding-top: 130px !important; }
 
 /* ── FAQ ── */
 .faq-section {
@@ -1627,7 +1741,7 @@ header { top: 40px !important; }
 @media (max-width: 480px) {
   .fab-whatsapp .fab-label { display: none; }
   .fab-whatsapp { padding: 14px; border-radius: 50%; }
-  header { top: 40px !important; }
+  header { top: 50px !important; }
 }
 
 </style>
@@ -1676,43 +1790,58 @@ src="https://www.facebook.com/tr?id=1535657421687710&ev=PageView&noscript=1"
 <!-- ============================================================
      HEADER
      ============================================================ -->
-<!-- ── TOPBAR URGÊNCIA ── -->
+<!-- ALTERAÇÃO: topbar maior e mais impactante -->
 <div class="topbar-urgencia" id="topbar">
   <div class="topbar-pulse"></div>
-  <span>⚠️ <strong>Vagas limitadas por dia.</strong> Garanta a sua figurinha antes que a fila aumente.</span>
+  <span>⚠️ <strong>Vagas limitadas por dia.</strong> Garanta a sua figurinha antes que a fila aumente — restam poucas vagas hoje!</span>
   <button class="topbar-close" onclick="document.getElementById('topbar').style.display='none'; document.querySelector('header').style.top='0'; document.querySelector('.hero').style.paddingTop='100px'">✕</button>
 </div>
 
+<!-- ALTERAÇÃO: logo clicável + tagline ao lado -->
 <header>
-  <div class="logo">kr.<span>IArt</span></div>
-  <a href="#formulario" class="header-cta">Criar minha figurinha</a>
+  <a href="#" class="logo-area" onclick="window.scrollTo({top:0,behavior:'smooth'}); return false;">
+    <div class="logo">kr.<span>IArt</span></div>
+    <span class="logo-tagline">sua figurinha<br>personalizada da copa!</span>
+  </a>
+  <a href="#formulario" class="header-cta">Criar figurinha agora!</a>
 </header>
 
 <!-- ============================================================
      HERO
      ============================================================ -->
-<section class="hero">
-  <div class="hero-badge">✨ Arte com IA · Entrega em 24h</div>
-  
-  <h1 class="hero-title">
-    Você na sua<br>
-    <span class="gradient-text">figurinha</span> da Copa! 🏆
-  </h1>
-  
-  <p class="hero-subtitle">
-    Envie sua selfie, escolha a seleção e receba sua figurinha personalizada no WhatsApp ou e-mail. Perfeita para postar e surpreender!
-  </p>
-  
-  <div class="hero-actions">
-    <a href="#formulario" class="btn-primary">⚽ Quero minha figurinha · R$7,90</a>
-    <button class="btn-ghost" onclick="document.getElementById('como-funciona').scrollIntoView({behavior:'smooth'})">Como funciona</button>
+<section class="hero" style="flex-direction:row; text-align:left; gap:48px; align-items:center; justify-content:center; flex-wrap:wrap; padding-left:40px; padding-right:40px;">
+
+  <!-- Coluna de texto -->
+  <div style="flex:1; min-width:280px; max-width:480px; display:flex; flex-direction:column; align-items:flex-start;">
+    <div class="hero-badge" style="margin-bottom:24px;">✨ Arte com IA · Entrega em 24h</div>
+    
+    <h1 class="hero-title" style="text-align:left; font-size:clamp(1.8rem,4vw,3.2rem);">
+      <span class="gradient-text">Crie sua figurinha</span><br>
+      da Copa! 🏆
+    </h1>
+    
+    <p class="hero-subtitle" style="text-align:left; margin-bottom:32px; font-size:0.95rem;">
+      Envie sua selfie, escolha a seleção e receba sua figurinha personalizada no WhatsApp ou e-mail. Perfeita para postar e surpreender!
+    </p>
+    
+    <div class="hero-actions" style="justify-content:flex-start;">
+      <a href="#formulario" class="btn-primary">⚽ Criar figurinha agora!</a>
+      <button class="btn-ghost" onclick="document.getElementById('como-funciona').scrollIntoView({behavior:'smooth'})">Como funciona</button>
+    </div>
+
+    <div class="hero-pills" style="justify-content:flex-start; margin-top:20px;">
+      <span class="pill">📸 Selfie + IA</span>
+      <span class="pill">🌍 32 seleções</span>
+      <span class="pill">⚡ Em 24h</span>
+      <span class="pill">💬 Via WhatsApp</span>
+    </div>
   </div>
 
-  <div class="hero-pills">
-    <span class="pill">📸 Selfie + IA</span>
-    <span class="pill">🌍 32 seleções</span>
-    <span class="pill">⚡ Em 24h</span>
-    <span class="pill">💬 Via WhatsApp</span>
+  <!-- Coluna antes/depois -->
+  <div style="flex-shrink:0; display:flex; flex-direction:column; gap:8px; animation: fadeUp 0.8s ease 0.3s both; max-width:260px;">
+    <img src="antes_depois_1.png" alt="Antes e depois" style="width:100%; border-radius:10px; display:block; box-shadow:0 8px 24px rgba(0,0,0,0.4);">
+    <img src="antes_depois_2.png" alt="Antes e depois" style="width:100%; border-radius:10px; display:block; box-shadow:0 8px 24px rgba(0,0,0,0.4);">
+    <img src="antes_depois_3.png" alt="Antes e depois" style="width:100%; border-radius:10px; display:block; box-shadow:0 8px 24px rgba(0,0,0,0.4);">
   </div>
 
 </section>
@@ -2019,6 +2148,57 @@ src="https://www.facebook.com/tr?id=1535657421687710&ev=PageView&noscript=1"
 </section>
 
 <!-- ============================================================
+     UPSELL — PACOTES
+     ============================================================ -->
+<section class="upsell-section">
+  <div class="section-label">Economize mais</div>
+  <h2 class="section-title">Pacotes de figurinhas personalizadas</h2>
+  <p class="section-sub">Quer fazer para família, amigos ou grupo de futebol? Escolha um pacote e economize.</p>
+  
+  <div class="packages-grid">
+    <div class="package-card">
+      <div class="package-badge">👫 Para amigos</div>
+      <div class="package-title">3 figurinhas</div>
+      <div class="package-old-price">3× R$7,90 = R$23,70</div>
+      <div class="package-economy">💰 Economize R$1,80</div>
+      <div class="package-price">R$21,90</div>
+      <div class="package-price-unit">R$7,30 por figurinha</div>
+      <div class="package-desc">Ideal para casais, amigos ou irmãos. Cada um escolhe sua seleção.</div>
+      <a class="btn-package" href="#" onclick="openWhatsappPackage('3 figurinhas personalizadas', 'R$ 21,90'); return false;">
+        👉 Quero esse pacote
+      </a>
+    </div>
+    
+    <div class="package-card featured">
+      <div class="package-ribbon">⭐ Mais escolhido</div>
+      <div class="package-badge">🔥 Melhor custo-benefício</div>
+      <div class="package-title">5 figurinhas</div>
+      <div class="package-old-price">5× R$7,90 = R$39,50</div>
+      <div class="package-economy">💰 Economize R$7,60</div>
+      <div class="package-price">R$31,90</div>
+      <div class="package-price-unit">R$6,38 por figurinha</div>
+      <div class="package-desc">Perfeito para grupos e família. O mais pedido — todo mundo quer a sua figurinha!</div>
+      <a class="btn-package" href="#" onclick="openWhatsappPackage('5 figurinhas personalizadas', 'R$ 31,90'); return false;">
+        🏆 Quero esse pacote
+      </a>
+    </div>
+    
+    <div class="package-card">
+      <div class="package-badge">⚽ Para times</div>
+      <div class="package-title">10 figurinhas</div>
+      <div class="package-old-price">10× R$7,90 = R$79,00</div>
+      <div class="package-economy">💰 Economize R$19,10</div>
+      <div class="package-price">R$59,90</div>
+      <div class="package-price-unit">R$5,99 por figurinha</div>
+      <div class="package-desc">Para times, grupos grandes e lembranças especiais. Melhor preço por figurinha.</div>
+      <a class="btn-package" href="#" onclick="openWhatsappPackage('10 figurinhas personalizadas', 'R$ 59,90'); return false;">
+        👉 Quero esse pacote
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
      MARQUEE — Linha 2 (reverso)
      ============================================================ -->
 <div class="marquee-section">
@@ -2069,43 +2249,26 @@ src="https://www.facebook.com/tr?id=1535657421687710&ev=PageView&noscript=1"
       </div>
     </div>
     
+    <!-- ALTERAÇÃO: figurinhas reais nos cards flutuantes -->
     <div class="benefits-visual">
-      <!-- Figurinha grande central -->
-      <div class="big-sticker">
-        <div class="sticker-img" style="background: linear-gradient(160deg, #0B6E2D 0%, #0A3D1F 100%);">
-          <div class="sticker-country-stripe" style="background: linear-gradient(90deg, #009C3B, #FFDF00, #009C3B)"></div>
-          <span style="position:relative;z-index:2;filter:drop-shadow(0 4px 12px rgba(0,0,0,0.8))">⭐</span>
-        </div>
-        <div class="sticker-body">
-          <div class="sticker-number">⚽ COPA</div>
-          <div class="sticker-name">Você Aqui!</div>
-          <div class="sticker-tag">Brasil</div>
+      <!-- Figurinha grande central — usa img_1_RAPHINHA.png -->
+      <div class="big-sticker" style="border:none; box-shadow: 0 20px 60px rgba(0,0,0,0.5); background:transparent;">
+        <div class="sticker-img" style="background:transparent; height:340px;">
+          <img src="img_1_RAPHINHA.png" alt="Figurinha Brasil" style="position:relative;z-index:1;width:100%;height:100%;object-fit:cover;object-position:top center;">
         </div>
         <div class="sticker-shine"></div>
       </div>
-      <!-- Mini figurinha 1 -->
-      <div class="mini-sticker">
-        <div class="sticker-img" style="background: linear-gradient(160deg, #00267F 0%, #001560 100%);">
-          <div class="sticker-country-stripe" style="background: linear-gradient(90deg, #002395, #FFFFFF, #ED2939)"></div>
-          <span style="position:relative;z-index:2;font-size:1.8rem">⚽</span>
-        </div>
-        <div class="sticker-body">
-          <div class="sticker-number">⚽ COPA</div>
-          <div class="sticker-name">Sua Arte</div>
-          <div class="sticker-tag">França</div>
+      <!-- Mini figurinha 1 — usa img_4_LÉA_MOREAU.png -->
+      <div class="mini-sticker" style="border:none; box-shadow: 0 10px 30px rgba(0,0,0,0.4);">
+        <div class="sticker-img" style="background:transparent; height:200px;">
+          <img src="img_4_LÉA_MOREAU.png" alt="Figurinha França" style="position:relative;z-index:1;width:100%;height:100%;object-fit:cover;object-position:top center;">
         </div>
         <div class="sticker-shine"></div>
       </div>
-      <!-- Mini figurinha 2 -->
-      <div class="mini-sticker">
-        <div class="sticker-img" style="background: linear-gradient(160deg, #7B003E 0%, #500028 100%);">
-          <div class="sticker-country-stripe" style="background: linear-gradient(90deg, #006600, #FF0000, #006600)"></div>
-          <span style="position:relative;z-index:2;font-size:1.8rem">🏆</span>
-        </div>
-        <div class="sticker-body">
-          <div class="sticker-number">⚽ COPA</div>
-          <div class="sticker-name">Figurinha</div>
-          <div class="sticker-tag">Portugal</div>
+      <!-- Mini figurinha 2 — usa img_3_A_FERREIRA.png -->
+      <div class="mini-sticker" style="border:none; box-shadow: 0 10px 30px rgba(0,0,0,0.4);">
+        <div class="sticker-img" style="background:transparent; height:200px;">
+          <img src="img_3_A_FERREIRA.png" alt="Figurinha Portugal" style="position:relative;z-index:1;width:100%;height:100%;object-fit:cover;object-position:top center;">
         </div>
         <div class="sticker-shine"></div>
       </div>
@@ -2186,45 +2349,6 @@ src="https://www.facebook.com/tr?id=1535657421687710&ev=PageView&noscript=1"
 </section>
 
 <!-- ============================================================
-     UPSELL — PACOTES
-     ============================================================ -->
-<section class="upsell-section">
-  <div class="section-label">Economize mais</div>
-  <h2 class="section-title">Pacotes de figurinhas personalizadas</h2>
-  <p class="section-sub">Quer fazer para família, amigos ou grupo de futebol? Escolha um pacote e economize.</p>
-  
-  <div class="packages-grid">
-    <div class="package-card">
-      <div class="package-title">3 figurinhas personalizadas</div>
-      <div class="package-price">R$21,90</div>
-      <div class="package-desc">Ideal para casais, amigos ou irmãos.</div>
-      <a class="btn-package" id="pkg-3" href="#" onclick="openWhatsappPackage('3 figurinhas personalizadas', 'R$ 21,90'); return false;">
-        Quero esse pacote
-      </a>
-    </div>
-    
-    <div class="package-card featured">
-      <div class="package-badge">⭐ Mais escolhido</div>
-      <div class="package-title">5 figurinhas personalizadas</div>
-      <div class="package-price">R$31,90</div>
-      <div class="package-desc">Perfeito para grupos e família.</div>
-      <a class="btn-package" id="pkg-5" href="#" onclick="openWhatsappPackage('5 figurinhas personalizadas', 'R$ 31,90'); return false;">
-        Quero esse pacote
-      </a>
-    </div>
-    
-    <div class="package-card">
-      <div class="package-title">10 figurinhas personalizadas</div>
-      <div class="package-price">R$59,90</div>
-      <div class="package-desc">Para times, grupos grandes e lembranças especiais.</div>
-      <a class="btn-package" id="pkg-10" href="#" onclick="openWhatsappPackage('10 figurinhas personalizadas', 'R$ 59,90'); return false;">
-        Quero esse pacote
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- ============================================================
      FOOTER
      ============================================================ -->
 <footer>
@@ -2235,7 +2359,7 @@ src="https://www.facebook.com/tr?id=1535657421687710&ev=PageView&noscript=1"
     </div>
     
     <div class="footer-links">
-      <a class="footer-link" href="#">Política de Privacidade</a>
+      <a class="footer-link" href="#" onclick="document.getElementById('modal-privacidade').style.display='flex'; return false;">Política de Privacidade</a>
       <a class="footer-link" href="#">Termos de Uso</a>
       <a class="footer-link" href="#">Dúvidas Frequentes</a>
       <a class="footer-link" id="footer-whatsapp" href="#" onclick="openWhatsappContact(); return false;">Fale Conosco</a>
@@ -2270,36 +2394,16 @@ src="https://www.facebook.com/tr?id=1535657421687710&ev=PageView&noscript=1"
    CONFIGURAÇÃO — EDITE AQUI
    ============================================================ */
 const CONFIG = {
-  // ══════════════════════════════════════════
-  // ▼ EDITE AQUI COM SEUS DADOS REAIS
-  // ══════════════════════════════════════════
-
-  // Seu WhatsApp para pacotes e contato
   whatsappNumber: '5547997605014',
-
-  // Mercado Pago Public Key (segura no frontend — diferente do Access Token)
-  // mercadopago.com.br/developers/panel → Credenciais de produção → Public Key
   mpPublicKey: 'APP_USR-fc71398e-a44a-47ff-931c-43bbfb6962f7',
-
-  // Supabase — Settings → API
   supabaseUrl: 'https://txmkhulfgpkivcugggzf.supabase.co',
   supabaseAnonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR4bWtodWxmZ3BraXZjdWdnZ3pmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2MTMyODUsImV4cCI6MjA5NjE4OTI4NX0.6_2p06RT_3uwNPK_MhBcJebbw1eJ_Hr_x4JgNR14fTc',
-
-  // URL da Edge Function de pagamento (preenchida automaticamente abaixo)
   get pagamentoEndpoint() {
     return this.supabaseUrl + '/functions/v1/criar-pagamento';
   },
-
-  // URL do seu site (para redirect após pagamento)
   siteUrl: 'https://kriartfigurinha.vercel.app',
-
-  // false = produção real | true = testa sem pagar
   testMode: false,
-
-  // Tabela no Supabase
   tabela: 'pedidos_figurinhas',
-
-  // Bucket no Supabase Storage para fotos
   bucket: 'fotos-figurinhas',
 };
 
@@ -2329,7 +2433,6 @@ function goToStep(step) {
 
   document.getElementById(`step-${currentStep}`).classList.remove('active');
   
-  // Atualiza dots e labels
   for (let i = 1; i <= 4; i++) {
     const dot = document.getElementById(`dot-${i}`);
     const label = document.getElementById(`label-${i}`);
@@ -2402,13 +2505,8 @@ function validateStep(step) {
   return ok;
 }
 
-function showError(id) {
-  document.getElementById(id).classList.add('visible');
-}
-
-function hideError(id) {
-  document.getElementById(id).classList.remove('visible');
-}
+function showError(id) { document.getElementById(id).classList.add('visible'); }
+function hideError(id) { document.getElementById(id).classList.remove('visible'); }
 
 /* ============================================================
    SELEÇÃO DE SELEÇÃO
@@ -2673,10 +2771,8 @@ function voltarDoPayment() {
 
 /* ============================================================
    INTEGRAÇÃO SUPABASE
-   Substitua as variáveis em CONFIG e descomente para usar.
    ============================================================ */
 async function salvarPedidoSupabase() {
-  // 1. Upload da foto para o Supabase Storage
   let fotoUrl = null;
   if (formData.foto) {
     const ext = formData.foto.name.split('.').pop();
@@ -2703,7 +2799,6 @@ async function salvarPedidoSupabase() {
     }
   }
 
-  // 2. Salvar pedido na tabela
   const selecaoFinal = formData.selecao !== 'outro' ? formData.selecao : formData.selecaoOutro;
 
   const payload = {
@@ -2741,15 +2836,8 @@ async function salvarPedidoSupabase() {
   }
 
   const data = await res.json();
-  return data[0].id; // UUID do pedido
+  return data[0].id;
 }
-
-/* ============================================================
-   INTEGRAÇÃO MERCADO PAGO (via backend/serverless)
-   Crie uma Edge Function no Supabase ou função no Vercel/Netlify
-   que receba o pedidoId, crie a preferência e retorne o init_point.
-   ============================================================ */
-// criarPagamentoMercadoPago removida — substituída pelo Payment Brick
 
 /* ============================================================
    SUCESSO
@@ -2762,11 +2850,9 @@ function showSuccess() {
 }
 
 function resetForm() {
-  // Reset estado
   Object.keys(formData).forEach(k => formData[k] = typeof formData[k] === 'object' ? null : '');
   currentStep = 1;
 
-  // Reset UI
   document.querySelectorAll('.selection-btn').forEach(b => b.classList.remove('selected'));
   document.getElementById('selecao-outro-field').style.display = 'none';
   document.getElementById('selecao-outro').value = '';
@@ -2784,7 +2870,6 @@ function resetForm() {
   document.getElementById('whatsapp-input').value = '';
   document.getElementById('email-input').value = '';
 
-  // Reset dots
   for (let i = 1; i <= 4; i++) {
     document.getElementById(`dot-${i}`).classList.remove('active', 'done');
     document.getElementById(`dot-${i}`).innerHTML = i;
@@ -2846,7 +2931,6 @@ function buildStickerCard(d) {
 
 function buildMarquee(id, data) {
   const el = document.getElementById(id);
-  // Duplicar para loop contínuo
   const html = [...data, ...data].map(buildStickerCard).join('');
   el.innerHTML = html;
 }
@@ -2906,7 +2990,6 @@ function checkPaymentReturn() {
       document.getElementById('formulario').scrollIntoView({ behavior: 'smooth' });
       showSuccess();
     }, 800);
-    // Limpar URL
     window.history.replaceState({}, '', window.location.pathname);
   }
 }
@@ -2916,13 +2999,45 @@ checkPaymentReturn();
 function toggleFaq(btn) {
   const item = btn.closest('.faq-item');
   const isOpen = item.classList.contains('open');
-  // Fechar todos
   document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
-  // Abrir o clicado se estava fechado
   if (!isOpen) item.classList.add('open');
 }
 
 </script>
+<!-- ============================================================
+     MODAL — POLÍTICA DE PRIVACIDADE
+     ============================================================ -->
+<div id="modal-privacidade" style="display:none; position:fixed; inset:0; z-index:500; background:rgba(0,0,0,0.75); align-items:center; justify-content:center; padding:24px;" onclick="if(event.target===this) this.style.display='none'">
+  <div style="background:#fff; color:#1a1a1a; border-radius:20px; max-width:640px; width:100%; max-height:85vh; overflow-y:auto; padding:40px; position:relative; box-shadow:0 40px 100px rgba(0,0,0,0.5);">
+    <button onclick="document.getElementById('modal-privacidade').style.display='none'" style="position:absolute;top:16px;right:16px;background:#f0f0f0;border:none;border-radius:50%;width:32px;height:32px;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;">✕</button>
+    <h2 style="font-family:var(--font-display);font-size:1.6rem;margin-bottom:8px;color:#1a1a1a;">Política de Privacidade</h2>
+    <p style="font-size:0.78rem;color:#888;margin-bottom:28px;">Última atualização: junho de 2025</p>
+
+    <h3 style="font-size:1rem;font-weight:700;margin-bottom:8px;color:#1a1a1a;">1. Quem somos</h3>
+    <p style="font-size:0.88rem;color:#444;line-height:1.7;margin-bottom:20px;">kr.IArt é um serviço de criação de figurinhas personalizadas com inteligência artificial, operado de forma independente no Brasil. Nosso site é <strong>kriartfigurinha.vercel.app</strong>.</p>
+
+    <h3 style="font-size:1rem;font-weight:700;margin-bottom:8px;color:#1a1a1a;">2. Dados que coletamos</h3>
+    <p style="font-size:0.88rem;color:#444;line-height:1.7;margin-bottom:20px;">Ao realizar um pedido, coletamos: <strong>foto enviada</strong> (selfie), nome, clube, data de nascimento (opcional), peso (opcional), número de WhatsApp ou endereço de e-mail para entrega, e dados de pagamento processados pelo Mercado Pago. Não armazenamos dados de cartão de crédito — eles são tratados exclusivamente pelo Mercado Pago.</p>
+
+    <h3 style="font-size:1rem;font-weight:700;margin-bottom:8px;color:#1a1a1a;">3. Como usamos seus dados</h3>
+    <p style="font-size:0.88rem;color:#444;line-height:1.7;margin-bottom:20px;">Seus dados são usados exclusivamente para: (a) criar sua figurinha personalizada; (b) entregar o arquivo pelo WhatsApp ou e-mail informado; (c) processar o pagamento. Não vendemos, alugamos ou compartilhamos seus dados com terceiros para fins comerciais.</p>
+
+    <h3 style="font-size:1rem;font-weight:700;margin-bottom:8px;color:#1a1a1a;">4. Armazenamento e segurança</h3>
+    <p style="font-size:0.88rem;color:#444;line-height:1.7;margin-bottom:20px;">As informações do pedido são armazenadas no Supabase (serviço em nuvem com criptografia em repouso e em trânsito). As fotos enviadas são salvas em bucket privado e utilizadas apenas para produção da figurinha, sendo excluídas após 90 dias.</p>
+
+    <h3 style="font-size:1rem;font-weight:700;margin-bottom:8px;color:#1a1a1a;">5. Seus direitos (LGPD)</h3>
+    <p style="font-size:0.88rem;color:#444;line-height:1.7;margin-bottom:20px;">Em conformidade com a Lei Geral de Proteção de Dados (Lei nº 13.709/2018), você tem direito a: acessar seus dados, solicitar correção, solicitar exclusão e revogar o consentimento. Para exercer esses direitos, entre em contato pelo WhatsApp ou e-mail.</p>
+
+    <h3 style="font-size:1rem;font-weight:700;margin-bottom:8px;color:#1a1a1a;">6. Cookies e rastreamento</h3>
+    <p style="font-size:0.88rem;color:#444;line-height:1.7;margin-bottom:20px;">Utilizamos o Meta Pixel para medir o desempenho de anúncios. Nenhum dado pessoal identificável é enviado ao Meta sem seu consentimento explícito. Você pode desativar o rastreamento nas configurações do seu navegador.</p>
+
+    <h3 style="font-size:1rem;font-weight:700;margin-bottom:8px;color:#1a1a1a;">7. Contato</h3>
+    <p style="font-size:0.88rem;color:#444;line-height:1.7;margin-bottom:28px;">Dúvidas sobre esta política? Fale conosco pelo WhatsApp: <strong>(47) 99760-5014</strong> ou pelo site.</p>
+
+    <button onclick="document.getElementById('modal-privacidade').style.display='none'" style="width:100%;background:#1a1a1a;color:#fff;border:none;border-radius:100px;padding:14px;font-size:0.95rem;font-weight:700;cursor:pointer;font-family:var(--font-body);">Fechar</button>
+  </div>
+</div>
+
 <script src="https://sdk.mercadopago.com/js/v2" async></script>
 </body>
 </html>
