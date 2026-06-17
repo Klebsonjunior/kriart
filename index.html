@@ -2029,7 +2029,7 @@ src="https://www.facebook.com/tr?id=1535657421687710&ev=PageView&noscript=1"
         <div class="error-msg" id="err-delivery">Escolha como deseja receber e preencha o contato.</div>
         
         <button class="btn-pay" onclick="handlePayment()">
-          🔒 Pagar R$ 7,90 e criar minha figurinha
+          🔒 Pagar R$ 10,90 e criar minha figurinha
         </button>
         
         <div class="form-nav" style="margin-top:12px;">
@@ -2047,7 +2047,7 @@ src="https://www.facebook.com/tr?id=1535657421687710&ev=PageView&noscript=1"
           Finalize seu pagamento
         </h3>
         <p style="color: var(--muted); font-size: 0.88rem;">
-          Pix ou cartão de crédito · R$ 7,90 · Seguro e rápido
+          Pix ou cartão de crédito · R$ 10,90 · Seguro e rápido
         </p>
       </div>
       <div id="paymentBrick_container"></div>
@@ -2159,10 +2159,10 @@ src="https://www.facebook.com/tr?id=1535657421687710&ev=PageView&noscript=1"
     <div class="package-card">
       <div class="package-badge">👫 Para amigos</div>
       <div class="package-title">3 figurinhas</div>
-      <div class="package-old-price">3× R$7,90 = R$23,70</div>
-      <div class="package-economy">💰 Economize R$1,80</div>
-      <div class="package-price">R$21,90</div>
-      <div class="package-price-unit">R$7,30 por figurinha</div>
+      <div class="package-old-price">3× R$10,90 = R$32,70</div>
+      <div class="package-economy">💰 Economize R$2,80</div>
+      <div class="package-price">R$29,90</div>
+      <div class="package-price-unit">R$9,97 por figurinha</div>
       <div class="package-desc">Ideal para casais, amigos ou irmãos. Cada um escolhe sua seleção.</div>
       <a class="btn-package" href="#" onclick="openWhatsappPackage('3 figurinhas personalizadas', 'R$ 21,90'); return false;">
         👉 Quero esse pacote
@@ -2173,10 +2173,10 @@ src="https://www.facebook.com/tr?id=1535657421687710&ev=PageView&noscript=1"
       <div class="package-ribbon">⭐ Mais escolhido</div>
       <div class="package-badge">🔥 Melhor custo-benefício</div>
       <div class="package-title">5 figurinhas</div>
-      <div class="package-old-price">5× R$7,90 = R$39,50</div>
-      <div class="package-economy">💰 Economize R$7,60</div>
-      <div class="package-price">R$31,90</div>
-      <div class="package-price-unit">R$6,38 por figurinha</div>
+      <div class="package-old-price">5× R$10,90 = R$54,50</div>
+      <div class="package-economy">💰 Economize R$4,60</div>
+      <div class="package-price">R$49,90</div>
+      <div class="package-price-unit">R$9,98 por figurinha</div>
       <div class="package-desc">Perfeito para grupos e família. O mais pedido — todo mundo quer a sua figurinha!</div>
       <a class="btn-package" href="#" onclick="openWhatsappPackage('5 figurinhas personalizadas', 'R$ 31,90'); return false;">
         🏆 Quero esse pacote
@@ -2186,10 +2186,10 @@ src="https://www.facebook.com/tr?id=1535657421687710&ev=PageView&noscript=1"
     <div class="package-card">
       <div class="package-badge">⚽ Para times</div>
       <div class="package-title">10 figurinhas</div>
-      <div class="package-old-price">10× R$7,90 = R$79,00</div>
+      <div class="package-old-price">10× R$10,90 = R$109,00</div>
       <div class="package-economy">💰 Economize R$19,10</div>
-      <div class="package-price">R$59,90</div>
-      <div class="package-price-unit">R$5,99 por figurinha</div>
+      <div class="package-price">R$89,90</div>
+      <div class="package-price-unit">R$8,99 por figurinha</div>
       <div class="package-desc">Para times, grupos grandes e lembranças especiais. Melhor preço por figurinha.</div>
       <a class="btn-package" href="#" onclick="openWhatsappPackage('10 figurinhas personalizadas', 'R$ 59,90'); return false;">
         👉 Quero esse pacote
@@ -2584,7 +2584,7 @@ function buildConfirmSummary() {
   if (formData.peso) {
     rows += `<div class="confirm-row"><span class="label">Peso</span><span class="value">${formData.peso}</span></div>`;
   }
-  rows += `<div class="confirm-row total"><span class="label">Total</span><span class="value">R$ 7,90</span></div>`;
+  rows += `<div class="confirm-row total"><span class="label">Total</span><span class="value">R$ 10,90</span></div>`;
   document.getElementById('confirm-summary').innerHTML = rows;
 }
 
@@ -2606,7 +2606,7 @@ async function handlePayment() {
   hideError('err-delivery');
 
   if (typeof fbq !== 'undefined') {
-    fbq('track', 'InitiateCheckout', { value: 7.90, currency: 'BRL', content_name: 'Figurinha Personalizada' });
+    fbq('track', 'InitiateCheckout', { value: 10.90, currency: 'BRL', content_name: 'Figurinha Personalizada' });
   }
 
   showLoading();
@@ -2645,7 +2645,7 @@ async function inicializarPaymentBrick(pedidoId) {
   const bricksBuilder = mp.bricks();
 
   _mpBrickController = await bricksBuilder.create('payment', 'paymentBrick_container', {
-    initialization: { amount: 7.90 },
+    initialization: { amount: 10.90 },
     customization: {
       paymentMethods: {
         creditCard: 'all', debitCard: 'all',
@@ -2689,7 +2689,7 @@ async function inicializarPaymentBrick(pedidoId) {
           if (!res.ok) throw new Error(result.error || 'Erro no pagamento');
 
           if (result.status === 'approved') {
-            if (typeof fbq !== 'undefined') fbq('track', 'Purchase', { value: 7.90, currency: 'BRL' });
+            if (typeof fbq !== 'undefined') fbq('track', 'Purchase', { value: 10.90, currency: 'BRL' });
             document.getElementById('payment-panel').style.display = 'none';
             showSuccess();
           } else if (result.status === 'pending' && result.qr_code) {
@@ -2753,7 +2753,7 @@ function iniciarPollingPagamento(pedidoId) {
       const data = await res.json();
       if (data.status === 'approved') {
         clearInterval(iv);
-        if (typeof fbq !== 'undefined') fbq('track', 'Purchase', { value: 7.90, currency: 'BRL' });
+        if (typeof fbq !== 'undefined') fbq('track', 'Purchase', { value: 10.90, currency: 'BRL' });
         document.getElementById('payment-panel').style.display = 'none';
         showSuccess();
       }
@@ -2812,7 +2812,7 @@ async function salvarPedidoSupabase() {
     whatsapp:         formData.whatsapp || null,
     email:            formData.email || null,
     foto_url:         fotoUrl,
-    valor:            7.90,
+    valor:            10.90,
     status_pagamento: 'aguardando_pagamento',
   };
 
