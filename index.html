@@ -1847,6 +1847,129 @@ src="https://www.facebook.com/tr?id=1535657421687710&ev=PageView&noscript=1"
 </section>
 
 <!-- ============================================================
+     LEGEND GOLD — Seção antes/depois
+     ============================================================ -->
+<section id="legend-section" style="
+  position: relative; z-index: 1;
+  padding: 64px 24px 56px;
+  text-align: center;
+  background: linear-gradient(180deg, rgba(14,51,32,0) 0%, rgba(10,20,10,0.6) 100%);
+">
+  <!-- Badge -->
+  <div style="
+    display: inline-flex; align-items: center; gap: 8px;
+    background: linear-gradient(135deg, #8B6914, #D4A843, #F2CC6B, #D4A843);
+    color: #0E0E0E;
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 6px 18px;
+    border-radius: 100px;
+    margin-bottom: 20px;
+  ">⭐ NOVIDADE</div>
+
+  <h2 style="
+    font-family: var(--font-display);
+    font-size: clamp(1.7rem, 4.5vw, 2.8rem);
+    font-weight: 900;
+    line-height: 1.15;
+    margin-bottom: 14px;
+    color: var(--text);
+  ">
+    Agora você pode fazer a<br>
+    <span style="background: linear-gradient(135deg, #D4A843, #F2CC6B); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+      Figurinha Legend! ✨
+    </span>
+  </h2>
+
+  <p style="
+    color: var(--muted);
+    font-size: 0.95rem;
+    max-width: 440px;
+    margin: 0 auto 40px;
+    line-height: 1.7;
+  ">
+    A versão dourada premium com acabamento Legend Gold. Sua foto transformada na figurinha mais exclusiva da Copa.
+  </p>
+
+  <!-- Grid de imagens antes/depois -->
+  <div style="
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+    max-width: 860px;
+    margin: 0 auto 40px;
+  ">
+    <div style="flex: 1; min-width: 280px; max-width: 400px; position: relative;">
+      <img src="before_after_1.png" alt="Sua foto vira figurinha Legend" style="
+        width: 100%;
+        border-radius: 16px;
+        display: block;
+        box-shadow: 0 12px 40px rgba(0,0,0,0.5), 0 0 0 2px rgba(212,168,67,0.35);
+      ">
+      <div style="
+        position: absolute;
+        bottom: -12px; left: 50%; transform: translateX(-50%);
+        background: linear-gradient(135deg, #D4A843, #F2CC6B);
+        color: #0E0E0E;
+        font-weight: 800;
+        font-size: 0.75rem;
+        letter-spacing: 0.08em;
+        padding: 5px 16px;
+        border-radius: 100px;
+        white-space: nowrap;
+      ">🏆 LEGEND GOLD</div>
+    </div>
+
+    <div style="flex: 1; min-width: 280px; max-width: 400px; position: relative;">
+      <img src="before_after_2.png" alt="Sua foto vira figurinha Legend" style="
+        width: 100%;
+        border-radius: 16px;
+        display: block;
+        box-shadow: 0 12px 40px rgba(0,0,0,0.5), 0 0 0 2px rgba(212,168,67,0.35);
+      ">
+      <div style="
+        position: absolute;
+        bottom: -12px; left: 50%; transform: translateX(-50%);
+        background: linear-gradient(135deg, #D4A843, #F2CC6B);
+        color: #0E0E0E;
+        font-weight: 800;
+        font-size: 0.75rem;
+        letter-spacing: 0.08em;
+        padding: 5px 16px;
+        border-radius: 100px;
+        white-space: nowrap;
+      ">🏆 LEGEND GOLD</div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div style="margin-top: 28px;">
+    <a href="#formulario" class="btn-primary" style="
+      background: linear-gradient(135deg, #8B6914, #D4A843, #F2CC6B);
+      color: #0E0E0E;
+      font-weight: 800;
+      font-size: 1rem;
+      padding: 16px 40px;
+      border-radius: 100px;
+      text-decoration: none;
+      display: inline-block;
+      box-shadow: 0 4px 20px rgba(212,168,67,0.4);
+      transition: transform 0.2s, box-shadow 0.2s;
+    " onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 30px rgba(212,168,67,0.55)'"
+       onmouseout="this.style.transform='';this.style.boxShadow='0 4px 20px rgba(212,168,67,0.4)'">
+      ⭐ Quero minha Legend Gold — R$ 14,90
+    </a>
+    <p style="color: var(--muted); font-size: 0.8rem; margin-top: 12px;">
+      Ou leve as duas por <strong style="color: var(--gold);">R$ 19,90</strong> 🔥
+    </p>
+  </div>
+</section>
+
+<!-- ============================================================
      MARQUEE — Linha 1
      ============================================================ -->
 <div class="marquee-section">
@@ -2028,8 +2151,20 @@ src="https://www.facebook.com/tr?id=1535657421687710&ev=PageView&noscript=1"
         
         <div class="error-msg" id="err-delivery">Escolha como deseja receber e preencha o contato.</div>
         
-        <button class="btn-pay" onclick="handlePayment()">
-          🔒 Pagar R$ 10,90 e criar minha figurinha
+        <!-- Botão figurinha normal -->
+        <button class="btn-pay" onclick="handlePayment('normal')" id="btn-normal">
+          🔒 Pagar R$ 10,90 · Figurinha Normal
+        </button>
+
+        <!-- Botão figurinha Legend -->
+        <button class="btn-pay btn-legend" onclick="handlePayment('legend')" id="btn-legend" style="background: linear-gradient(135deg, #8B6914, #D4A843, #F2CC6B) !important; color: #0E0E0E !important; margin-top: 10px;">
+          ⭐ Pagar R$ 14,90 · Figurinha Legend Gold
+        </button>
+
+        <!-- Botão combo -->
+        <button class="btn-pay btn-combo" onclick="handlePayment('combo')" id="btn-combo" style="background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460) !important; border: 2px solid var(--gold) !important; margin-top: 10px; position: relative; overflow: hidden;">
+          <span style="position: absolute; top: 6px; right: 12px; background: #E53935; color: #fff; font-size: 0.62rem; font-weight: 800; padding: 2px 8px; border-radius: 100px; letter-spacing: 0.05em;">PROMO</span>
+          🔥 Normal + Legend Gold · R$ 19,90
         </button>
         
         <div class="form-nav" style="margin-top:12px;">
@@ -2046,7 +2181,7 @@ src="https://www.facebook.com/tr?id=1535657421687710&ev=PageView&noscript=1"
         <h3 style="font-family: var(--font-display); color: var(--gold); font-size:1.3rem; margin-bottom:4px;">
           Finalize seu pagamento
         </h3>
-        <p style="color: var(--muted); font-size: 0.88rem;">
+        <p style="color: var(--muted); font-size: 0.88rem;" id="payment-panel-desc">
           Pix ou cartão de crédito · R$ 10,90 · Seguro e rápido
         </p>
       </div>
@@ -2420,7 +2555,9 @@ const formData = {
   peso: '',
   metodoEntrega: '',
   whatsapp: '',
-  email: ''
+  email: '',
+  tipoPedido: 'normal',
+  valorPedido: 10.90
 };
 
 let currentStep = 1;
@@ -2584,7 +2721,12 @@ function buildConfirmSummary() {
   if (formData.peso) {
     rows += `<div class="confirm-row"><span class="label">Peso</span><span class="value">${formData.peso}</span></div>`;
   }
-  rows += `<div class="confirm-row total"><span class="label">Total</span><span class="value">R$ 10,90</span></div>`;
+  const tipoLabel = { normal: 'Figurinha Normal', legend: 'Legend Gold ⭐', combo: 'Normal + Legend Gold 🔥' };
+  const tipoNome = tipoLabel[formData.tipoPedido] || 'Figurinha Normal';
+  const tipoValor = { normal: 'R$ 10,90', legend: 'R$ 14,90', combo: 'R$ 19,90' };
+  const valorStr = tipoValor[formData.tipoPedido] || 'R$ 10,90';
+  rows += `<div class="confirm-row"><span class="label">Tipo</span><span class="value">${tipoNome}</span></div>`;
+  rows += `<div class="confirm-row total"><span class="label">Total</span><span class="value">${valorStr}</span></div>`;
   document.getElementById('confirm-summary').innerHTML = rows;
 }
 
@@ -2594,7 +2736,10 @@ function buildConfirmSummary() {
 let _pedidoIdAtual = null;
 let _mpBrickController = null;
 
-async function handlePayment() {
+async function handlePayment(tipo) {
+  formData.tipoPedido = tipo || 'normal';
+  const precos = { normal: 10.90, legend: 14.90, combo: 19.90 };
+  formData.valorPedido = precos[formData.tipoPedido];
   if (!formData.metodoEntrega) { showError('err-delivery'); return; }
   if (formData.metodoEntrega === 'whatsapp') {
     formData.whatsapp = document.getElementById('whatsapp-input').value.trim();
@@ -2605,8 +2750,16 @@ async function handlePayment() {
   }
   hideError('err-delivery');
 
+  // Update payment panel description
+  const descs = {
+    normal: 'Pix ou cartão de crédito · R$ 10,90 · Seguro e rápido',
+    legend: 'Pix ou cartão de crédito · R$ 14,90 · Figurinha Legend Gold',
+    combo:  'Pix ou cartão de crédito · R$ 19,90 · Normal + Legend Gold 🔥'
+  };
+  document.getElementById('payment-panel-desc').textContent = descs[formData.tipoPedido] || descs.normal;
+
   if (typeof fbq !== 'undefined') {
-    fbq('track', 'InitiateCheckout', { value: 10.90, currency: 'BRL', content_name: 'Figurinha Personalizada' });
+    fbq('track', 'InitiateCheckout', { value: formData.valorPedido, currency: 'BRL', content_name: 'Figurinha ' + formData.tipoPedido });
   }
 
   showLoading();
@@ -2645,7 +2798,7 @@ async function inicializarPaymentBrick(pedidoId) {
   const bricksBuilder = mp.bricks();
 
   _mpBrickController = await bricksBuilder.create('payment', 'paymentBrick_container', {
-    initialization: { amount: 10.90 },
+    initialization: { amount: formData.valorPedido || 10.90 },
     customization: {
       paymentMethods: {
         creditCard: 'all', debitCard: 'all',
@@ -2689,7 +2842,7 @@ async function inicializarPaymentBrick(pedidoId) {
           if (!res.ok) throw new Error(result.error || 'Erro no pagamento');
 
           if (result.status === 'approved') {
-            if (typeof fbq !== 'undefined') fbq('track', 'Purchase', { value: 10.90, currency: 'BRL' });
+            if (typeof fbq !== 'undefined') fbq('track', 'Purchase', { value: formData.valorPedido, currency: 'BRL' });
             document.getElementById('payment-panel').style.display = 'none';
             showSuccess();
           } else if (result.status === 'pending' && result.qr_code) {
@@ -2753,7 +2906,7 @@ function iniciarPollingPagamento(pedidoId) {
       const data = await res.json();
       if (data.status === 'approved') {
         clearInterval(iv);
-        if (typeof fbq !== 'undefined') fbq('track', 'Purchase', { value: 10.90, currency: 'BRL' });
+        if (typeof fbq !== 'undefined') fbq('track', 'Purchase', { value: formData.valorPedido || 10.90, currency: 'BRL' });
         document.getElementById('payment-panel').style.display = 'none';
         showSuccess();
       }
@@ -2812,7 +2965,8 @@ async function salvarPedidoSupabase() {
     whatsapp:         formData.whatsapp || null,
     email:            formData.email || null,
     foto_url:         fotoUrl,
-    valor:            10.90,
+    valor:            formData.valorPedido || 10.90,
+    tipo_pedido:      formData.tipoPedido || 'normal',
     status_pagamento: 'aguardando_pagamento',
   };
 
